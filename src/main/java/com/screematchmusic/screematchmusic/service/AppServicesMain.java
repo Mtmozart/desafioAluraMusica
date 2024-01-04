@@ -27,7 +27,7 @@ public class AppServicesMain {
     public List<Artista> listarArtistas(){
         List<Artista> artistasParaBusca = artistas.stream()
                 .sorted(Comparator.comparing(Artista::getName))
-                .peek(a -> System.out.println("nome: " + a.getName() + ", informações:" + a.getInformacoes()))
+                .peek(a -> System.out.println("nome: " + a.getName()))
                 .collect(Collectors.toList());
         return artistasParaBusca;
     }
@@ -35,15 +35,18 @@ public class AppServicesMain {
     public void cadastrarMusica() {
         System.out.println("Veja se seu artista está na lista, caso não o cadastre: ");
         List<Artista> artistasParaMusica = listarArtistas();
+        System.out.println("--------------------");
+        System.out.println("Escolha um artista para adiciona a música");
         String nomeDoArtista = sc.nextLine();
         Optional<Artista> artistaBusca = artistasParaMusica.stream()
                         .filter(e -> e.getName().toUpperCase().equalsIgnoreCase(nomeDoArtista.toUpperCase()))
                         .findFirst();
-        System.out.println("Escolha um artista para adiciona a música");
+
+
         if(artistaBusca.isPresent()) {
             System.out.println("Digite o nome da música");
             var nomeMusica = sc.nextLine();
-            musica = new Musica(nomeMusica, artista);
+            musica = new Musica(nomeMusica, artistaBusca.get());
             artista.addMusica(musica);
             System.out.println(musica);
         }
