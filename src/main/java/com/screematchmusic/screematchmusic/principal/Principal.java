@@ -36,7 +36,7 @@ public class Principal {
                     appServicesMain.listarArtistas();
                     break;
                 case 4:
-                    appServicesMain.listarMusicas();
+                    appServicesMain.listarMusica();
                     break;
 
                 case 5:
@@ -57,6 +57,7 @@ public class Principal {
 
 
         }
+        sc.close();
     }
 
 }
