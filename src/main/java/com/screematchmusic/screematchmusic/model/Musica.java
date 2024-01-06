@@ -1,25 +1,43 @@
 package com.screematchmusic.screematchmusic.model;
 
-public class Musica {
+import jakarta.persistence.*;
 
-    private String nome;
+@Entity
+@Table(name = "musicas")
+public class Musica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
+    private String titulo;
+    @ManyToOne
+    @JoinColumn(name = "artista_id")
     private Artista artista;
 
     public Musica() {
 
     }
 
-    public Musica(String nome, Artista artista) {
-        this.nome = nome;
+    public Musica(String titulo, Artista artista) {
+        this.titulo = titulo;
         this.artista = artista;
     }
 
-    public String getNome() {
-        return nome;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String nome) {
+        this.titulo = titulo;
     }
 
     public Artista getArtista() {
@@ -33,8 +51,8 @@ public class Musica {
     @Override
     public String toString() {
         return "Musica{" +
-                "nome='" + nome + '\'' +
-                ", artista=" + artista.getName() +
+                "nome='" + titulo + '\'' +
+                ", artista=" + artista +
                 '}';
     }
 }

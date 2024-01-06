@@ -27,7 +27,7 @@ public class Principal {
             sc.nextLine();
             switch (opcao) {
                 case 1:
-                    appServicesMain.cadastrarArtista();
+                    appServicesMain.getArtitas();
                     break;
                 case 2:
                     appServicesMain.cadastrarMusica();

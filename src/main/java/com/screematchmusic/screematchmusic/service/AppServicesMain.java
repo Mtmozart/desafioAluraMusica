@@ -1,6 +1,8 @@
 package com.screematchmusic.screematchmusic.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.screematchmusic.screematchmusic.model.Artista;
+import com.screematchmusic.screematchmusic.model.DadosArtista;
 import com.screematchmusic.screematchmusic.model.Musica;
 
 import java.util.*;
@@ -11,6 +13,8 @@ public class AppServicesMain {
     private ArrayList<Artista> artistas = new ArrayList<>();
     private Musica musica = new Musica();
     private List<Musica> musicas = new ArrayList<>();
+    private ConsumoAPI api = new ConsumoAPI();
+    private ConversorDeDados conveter = new ConversorDeDados();
     Scanner sc = new Scanner(System.in);
 
 
@@ -24,6 +28,20 @@ public class AppServicesMain {
         artista = new Artista(nome, text, informacoes);
         artistas.add(artista);
         System.out.println(artista);
+
+    }
+
+    public String getArtitas(){
+        try {
+            var json = api.obterDados("https://www.vagalume.com.br/u2/index.js");
+
+            var convertido = conveter.obterDados(json,DadosArtista.class);
+            System.out.println(convertido);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erro ao obter dados da API";
+        }
     }
 
     public List<Artista> listarArtistas() {
@@ -61,7 +79,7 @@ public class AppServicesMain {
 
     public void listarMusica() {
         List<Musica> musicasListadas = musicas.stream()
-                .sorted(Comparator.comparing(Musica::getNome))
+                .sorted(Comparator.comparing(Musica::getTitulo))
                 .collect(Collectors.toList());
 
         musicasListadas.forEach(System.out::println);
