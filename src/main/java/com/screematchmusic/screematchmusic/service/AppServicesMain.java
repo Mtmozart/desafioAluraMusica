@@ -17,7 +17,7 @@ public class AppServicesMain {
     private ConsumoAPI api = new ConsumoAPI();
     private ConversorDeDados conveter = new ConversorDeDados();
     private String URLApi = "https://api.deezer.com/artist/";
-    private String URLApiFim = "top?limit=150";
+    private String URLApiFim = "/top?limit=150";
     private ArtistaRepository repositorio;
 
     public AppServicesMain() {
@@ -60,11 +60,12 @@ public class AppServicesMain {
     public void cadastrarMusicas() {
         listarArtistas();
         System.out.println("Digite o nome do artista que deseja baixar as músicas: ");
-        String nomeArtista = sc.nextLine();
-        Optional<Artista> artistaEcontrado= repositorio.findByNameContainingIgnoreCase(nomeArtista);
+        String nome = sc.nextLine();
 
-        if (artistaEcontrado.isPresent()){
-            Integer id_denzer = artistaEcontrado.get().getId_denzer();
+        Optional<Artista> artistasEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
+
+        if (artistasEncontrado.isPresent()){
+            Integer id_denzer = artistasEncontrado.get().getId_denzer();
            var json = api.obterDados(URLApi + id_denzer + URLApiFim);
             System.out.println(json);
 
