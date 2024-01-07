@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DadosArtista(
-        @JsonProperty("name") String name
-
+        @JsonProperty("name") String name,
+        @JsonAlias("id") Integer id_denzer
 ) {
 }

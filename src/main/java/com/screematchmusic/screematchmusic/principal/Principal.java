@@ -38,23 +38,23 @@ public class Principal {
                     appServicesMain.cadastrarArtista();
                     break;
                 case 2:
-                    appServicesMain.cadastrarMusica();
+                    appServicesMain.cadastrarMusicas();
                     break;
                 case 3:
                     appServicesMain.listarArtistas();
                     break;
                 case 4:
-                    appServicesMain.listarMusica();
+              //      appServicesMain.listarMusica();
                     break;
 
                 case 5:
-                    appServicesMain.buscarMusicaPorArtista();
+               //     appServicesMain.buscarMusicaPorArtista();
                     break;
                 case 6:
-                    appServicesMain.pesquisarDadosSobreArtista();
+                   // appServicesMain.pesquisarDadosSobreArtista();
                     break;
                 case 7:
-                    appServicesMain.pesquisarDadosSobreArtista();
+//appServicesMain.pesquisarDadosSobreArtista();
                     break;
                 case 0:
                     System.out.println("Saindo...");
