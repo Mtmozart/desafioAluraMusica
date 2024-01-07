@@ -18,8 +18,8 @@ public class Artista {
 
     @OneToMany(mappedBy = "artista")
     private List<Musica> musicas = new ArrayList<>();
-    @Column(name = "informacoes")
-    private String informacoes;
+        @Column(name = "informacoes", length = 1000)
+        private String informacoes;
 
     public Artista() {
     }

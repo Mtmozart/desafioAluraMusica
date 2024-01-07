@@ -1,5 +1,6 @@
 package com.screematchmusic.screematchmusic.principal;
 
+import com.screematchmusic.screematchmusic.repository.ArtistaRepository;
 import com.screematchmusic.screematchmusic.service.AppServicesMain;
 
 import java.util.Scanner;
@@ -7,7 +8,14 @@ import java.util.Scanner;
 public class Principal {
 
     private AppServicesMain appServicesMain = new AppServicesMain();
+
+
+
     Scanner sc = new Scanner(System.in);
+
+    public Principal(AppServicesMain app) {
+        this.appServicesMain = app;
+    }
 
     public void exibirMenu() {
         var opcao = -1;
@@ -27,7 +35,7 @@ public class Principal {
             sc.nextLine();
             switch (opcao) {
                 case 1:
-                    appServicesMain.getArtitas();
+                    appServicesMain.cadastrarArtista();
                     break;
                 case 2:
                     appServicesMain.cadastrarMusica();

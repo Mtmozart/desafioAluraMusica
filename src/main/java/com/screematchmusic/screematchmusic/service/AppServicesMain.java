@@ -1,13 +1,14 @@
 package com.screematchmusic.screematchmusic.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.screematchmusic.screematchmusic.model.Artista;
 import com.screematchmusic.screematchmusic.model.DadosArtista;
 import com.screematchmusic.screematchmusic.model.Musica;
+import com.screematchmusic.screematchmusic.repository.ArtistaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Service
 public class AppServicesMain {
     private Artista artista = new Artista();
     private ArrayList<Artista> artistas = new ArrayList<>();
@@ -15,6 +16,15 @@ public class AppServicesMain {
     private List<Musica> musicas = new ArrayList<>();
     private ConsumoAPI api = new ConsumoAPI();
     private ConversorDeDados conveter = new ConversorDeDados();
+    private String URLApi = "https://api.deezer.com/artist/";
+    private ArtistaRepository repositorio;
+
+    public AppServicesMain() {
+    }
+    public AppServicesMain(ArtistaRepository repository) {
+        this.repositorio = repository;
+    }
+
     Scanner sc = new Scanner(System.in);
 
 
@@ -22,26 +32,22 @@ public class AppServicesMain {
 
         System.out.println("Digite o nome do artista");
         var nome = sc.nextLine();
-        System.out.println("Digite o tipo");
-        var text = sc.nextLine();
+        DadosArtista artistaNome = getArtitas(nome);
+        System.out.println("Digite o tipo: Solo/Dupla/Banda");
+        var tipo = sc.nextLine();
         String informacoes = ConsultaChatGPT.obterTraducao(nome);
-        artista = new Artista(nome, text, informacoes);
-        artistas.add(artista);
-        System.out.println(artista);
-
+        System.out.println(informacoes);
+        artista = new Artista(artistaNome.name(), tipo, informacoes);
+        repositorio.save(artista);
     }
 
-    public String getArtitas(){
-        try {
-            var json = api.obterDados("https://www.vagalume.com.br/u2/index.js");
+    public DadosArtista getArtitas(String artista) {
+        String url = URLApi + artista;
+        var json = api.obterDados(url);
+        DadosArtista dados = conveter.obterDados(json, DadosArtista.class);
+        System.out.println(dados);
+        return dados;
 
-            var convertido = conveter.obterDados(json,DadosArtista.class);
-            System.out.println(convertido);
-            return json;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Erro ao obter dados da API";
-        }
     }
 
     public List<Artista> listarArtistas() {

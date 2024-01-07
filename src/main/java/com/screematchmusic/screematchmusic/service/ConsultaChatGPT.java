@@ -9,8 +9,8 @@ public class ConsultaChatGPT {
 
         CompletionRequest requisicao = CompletionRequest.builder()
                 .model("text-davinci-003")
-                .prompt("Diga algo sobre este artista, observe as regras da língua portuguesa: " + texto)
-                .maxTokens(1000)
+                .prompt("Diga algo sobre este artista em no máximo 255 caracteres: " + texto)
+                .maxTokens(255)
                 .temperature(0.7)
                 .build();
 
