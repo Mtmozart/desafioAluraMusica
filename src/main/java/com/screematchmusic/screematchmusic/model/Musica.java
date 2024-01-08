@@ -9,14 +9,14 @@ public class Musica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    private Long id_denzer;
+    @Column(unique = true)
     private String titulo;
     @ManyToOne
     @JoinColumn(name = "artista_id")
     private Artista artista;
 
-    public Musica() {
-
-    }
+    public Musica() { }
 
     public Musica(String titulo, Artista artista) {
         this.titulo = titulo;

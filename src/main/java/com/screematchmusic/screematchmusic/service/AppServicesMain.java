@@ -2,6 +2,7 @@ package com.screematchmusic.screematchmusic.service;
 
 import com.screematchmusic.screematchmusic.model.Artista;
 import com.screematchmusic.screematchmusic.model.DadosArtista;
+import com.screematchmusic.screematchmusic.model.DadosMusica;
 import com.screematchmusic.screematchmusic.model.Musica;
 import com.screematchmusic.screematchmusic.repository.ArtistaRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class AppServicesMain {
     private ConsumoAPI api = new ConsumoAPI();
     private ConversorDeDados conveter = new ConversorDeDados();
     private String URLApi = "https://api.deezer.com/artist/";
-    private String URLApiFim = "/top?limit=150";
+    private String URLApiFim = "/top?limit=10";
     private ArtistaRepository repositorio;
 
     public AppServicesMain() {
@@ -43,6 +44,8 @@ public class AppServicesMain {
     }
 
     public DadosArtista getArtitas(String artista) {
+        artista = artista.replace(" ", "-");
+        artista = artista.replace("'", "");
         String url = URLApi + artista;
         var json = api.obterDados(url);
         DadosArtista dados = conveter.obterDados(json, DadosArtista.class);
@@ -65,9 +68,11 @@ public class AppServicesMain {
         Optional<Artista> artistasEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
 
         if (artistasEncontrado.isPresent()){
+            //Não esquecer o seguinte ponto: a música tem que ter um set para artista, e artista para música
             Integer id_denzer = artistasEncontrado.get().getId_denzer();
            var json = api.obterDados(URLApi + id_denzer + URLApiFim);
-            System.out.println(json);
+            List<Musica>  musicas = conveter.obterLista(json, DadosMusica.class);
+          System.out.println(musicas);
 
         }
         else{
