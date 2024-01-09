@@ -18,10 +18,13 @@ public class Musica {
 
     public Musica() { }
 
-    public Musica(String titulo, Artista artista) {
+    public Musica(String titulo, Long id_denzer,Artista artista) {
         this.titulo = titulo;
         this.artista = artista;
+        this.id_denzer = id_denzer;
     }
+
+
 
 
     public Long getId() {

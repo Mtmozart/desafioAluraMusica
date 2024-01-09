@@ -1,14 +1,13 @@
 package com.screematchmusic.screematchmusic.service;
 
-import com.screematchmusic.screematchmusic.model.Artista;
-import com.screematchmusic.screematchmusic.model.DadosArtista;
-import com.screematchmusic.screematchmusic.model.DadosMusica;
-import com.screematchmusic.screematchmusic.model.Musica;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.screematchmusic.screematchmusic.model.*;
 import com.screematchmusic.screematchmusic.repository.ArtistaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Service
 public class AppServicesMain {
     private Artista artista = new Artista();
@@ -18,11 +17,12 @@ public class AppServicesMain {
     private ConsumoAPI api = new ConsumoAPI();
     private ConversorDeDados conveter = new ConversorDeDados();
     private String URLApi = "https://api.deezer.com/artist/";
-    private String URLApiFim = "/top?limit=10";
+    private String URLApiFim = "/top?limit=20";
     private ArtistaRepository repositorio;
 
     public AppServicesMain() {
     }
+
     public AppServicesMain(ArtistaRepository repository) {
         this.repositorio = repository;
     }
@@ -54,28 +54,37 @@ public class AppServicesMain {
     }
 
     public void listarArtistas() {
-       artistas = repositorio.findAll();
-       artistas.stream()
-               .sorted(Comparator.comparing(Artista::getName)).forEach(System.out::println);
+        artistas = repositorio.findAll();
+        artistas.stream()
+                .sorted(Comparator.comparing(Artista::getName)).forEach(System.out::println);
 
     }
 
     public void cadastrarMusicas() {
+        //para não esquecer https://api.deezer.com/search?q=mockbird
         listarArtistas();
         System.out.println("Digite o nome do artista que deseja baixar as músicas: ");
         String nome = sc.nextLine();
 
         Optional<Artista> artistasEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
 
-        if (artistasEncontrado.isPresent()){
+        if (artistasEncontrado.isPresent()) {
             //Não esquecer o seguinte ponto: a música tem que ter um set para artista, e artista para música
             Integer id_denzer = artistasEncontrado.get().getId_denzer();
-           var json = api.obterDados(URLApi + id_denzer + URLApiFim);
-            List<Musica>  musicas = conveter.obterLista(json, DadosMusica.class);
-          System.out.println(musicas);
+            var json = api.obterDados(URLApi + id_denzer + URLApiFim);
+            List<DadosMusica> musicasAPI = conveter.obterlista(json, DadosMusica.class);
+            musicasAPI.forEach(m -> {
+                m.musicas().forEach(n -> {
+                    Artista artista = artistasEncontrado.get();
+                    Musica musica = new Musica(n.nome(), n.id_denzer(), artista);
+                    musicas.add(musica);
+                });
+            });
 
-        }
-        else{
+            repositorio.saveAll((Iterable<? extends Artista>) musicas);
+
+
+        } else {
             System.out.println("Artista não encotrado");
         }
 
@@ -93,7 +102,7 @@ public class AppServicesMain {
 //        } else {
 //            System.out.println("Artista não encontrado");
 //        }
- //   }
+    //   }
 
 //    public void addMusicasNaLista(Musica musica) {
 //        //musicas.add(musica);
@@ -123,7 +132,7 @@ public class AppServicesMain {
 //        }
 
 
-  //  }
+    //  }
 
 //    public void pesquisarDadosSobreArtista() {
 //        var artistaBuscaInformacoes = listarArtistas();
@@ -140,6 +149,6 @@ public class AppServicesMain {
 //        }
 
 
-    }
+}
 
 

@@ -3,11 +3,8 @@ package com.screematchmusic.screematchmusic.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.List;
-
-
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DadosMusica(  @JsonAlias("data") List<Dados> musicas
-
+public record Dados(@JsonAlias("id") Long id_denzer,
+                    @JsonAlias("title") String nome
 ) {
 }

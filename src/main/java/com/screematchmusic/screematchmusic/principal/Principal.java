@@ -22,7 +22,7 @@ public class Principal {
         while (opcao != 0) {
             String menu = """
                         1 - Cadastrar artistas
-                        2 - Cadastrar músicas
+                        2 - Cadastrar top 20 músicas de um artista
                         3 - Listar artistas
                         4 - Listar músicas
                         5 - Buscar músicas por artistas
