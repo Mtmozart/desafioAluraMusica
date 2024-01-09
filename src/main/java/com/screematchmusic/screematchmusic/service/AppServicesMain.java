@@ -61,7 +61,6 @@ public class AppServicesMain {
         artistas = repositorio.findAll();
         artistas.stream()
                 .sorted(Comparator.comparing(Artista::getName)).forEach(System.out::println);
-
     }
 
     public void cadastrarTop15Musicas() {
@@ -69,10 +68,7 @@ public class AppServicesMain {
         listarArtistas();
         System.out.println("Digite o nome do artista que deseja baixar as músicas: ");
         String nome = sc.nextLine();
-
-
         Optional<Artista> artistaEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
-
         if (artistaEncontrado.isPresent()) {
             Integer idDeezer = artistaEncontrado.get().getId_denzer();
             var json = api.obterDados(URLApi + idDeezer + URLApiFim);
@@ -119,38 +115,44 @@ public class AppServicesMain {
 
     }
 
-//    public void buscarMusicaPorArtista() {
-//        var artistaBuscado = listarArtistas();
-//        System.out.println("Digite o nome de um artista");
-//        String artistaNome = sc.nextLine();
-//
-//        Optional<Artista> artistaEncontrado = artistaBuscado.stream()
-//                .filter(a -> a.getName().equalsIgnoreCase(artistaNome))
-//                .findFirst();
-//
-//        if (artistaEncontrado.isPresent()) {
-//            artistaEncontrado.get().getMusicas().forEach(System.out::println);
-//        } else {
-//            System.out.println("Artista não encontrado");
-//        }
+    public void buscarMusicaPorArtista() {
+        System.out.println("Digite o nome do artista");
+        String nomeArtista = sc.nextLine();
+        Optional<Artista> artistaEncontrado = repositorio.findByNameContainingIgnoreCase(nomeArtista);
+        if (artistaEncontrado.isPresent()) {
+            Artista artista = artistaEncontrado.get();
+            List<Musica> musicas = artista.getMusicas();
+            if (musicas.isEmpty()) {
+                System.out.println("Sem músicas cadastradas para o artista " + artista.getName());
+            } else {
+                System.out.println("Músicas do artista " + artista.getName() + ":");
+                var musicasListada = musicas.stream()
+                        .sorted(Comparator.comparing(Musica::getTitulo))
+                        .collect(Collectors.toList());
+                musicasListada.forEach(m -> System.out.println(m.getTitulo())
+                );
+
+            }
+        } else {
+            System.out.println("Artista não encontrado");
+        }
 
 
-//  }
+    }
 
-//    public void pesquisarDadosSobreArtista() {
-//        var artistaBuscaInformacoes = listarArtistas();
-//        System.out.println("Digite o nome de um artista");
-//        var buscaInformacoes = sc.nextLine();
-//        var artistaEncontrado = artistas.stream()
-//                .filter(a -> a.getName().toUpperCase().contains(buscaInformacoes.toUpperCase()))
-//                .findFirst();
-//
-//        if (artistaEncontrado.isEmpty()) {
-//            System.out.println(artistaEncontrado);
-//        } else {
-//            System.out.println(artistaEncontrado.get());
-//        }
+    public void pesquisarDadosSobreArtista() {
+        listarArtistas();
+        System.out.println("Digite o nome do artista que deseja procurar o nome");
+        String nome = sc.nextLine();
+        var artistaInformacoes = repositorio.findByNameContainingIgnoreCase(nome);
+        if (artistaInformacoes.isPresent()){
+            System.out.println(artistaInformacoes.get().getInformacoes());
+        }
+        else {
+            System.out.println("Artista não encontrado");
+        }
 
+    }
 
 }
 

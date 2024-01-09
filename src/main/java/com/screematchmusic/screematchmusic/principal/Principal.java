@@ -47,10 +47,10 @@ public class Principal {
                     break;
 
                 case 5:
-                    //     appServicesMain.buscarMusicaPorArtista();
+                     appServicesMain.buscarMusicaPorArtista();
                     break;
                 case 6:
-                    // appServicesMain.pesquisarDadosSobreArtista();
+                     appServicesMain.pesquisarDadosSobreArtista();
                     break;
                 case 7:
 //appServicesMain.pesquisarDadosSobreArtista();
