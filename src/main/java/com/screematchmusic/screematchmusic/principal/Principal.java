@@ -38,7 +38,7 @@ public class Principal {
                     appServicesMain.cadastrarArtista();
                     break;
                 case 2:
-                    appServicesMain.cadastrarMusicas();
+                    appServicesMain.cadastrarTop15Musicas();
                     break;
                 case 3:
                     appServicesMain.listarArtistas();

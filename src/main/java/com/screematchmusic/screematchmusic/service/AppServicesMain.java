@@ -17,7 +17,7 @@ public class AppServicesMain {
     private ConsumoAPI api = new ConsumoAPI();
     private ConversorDeDados conveter = new ConversorDeDados();
     private String URLApi = "https://api.deezer.com/artist/";
-    private String URLApiFim = "/top?limit=20";
+    private String URLApiFim = "/top?limit=15";
     private ArtistaRepository repositorio;
 
     public AppServicesMain() {
@@ -60,7 +60,7 @@ public class AppServicesMain {
 
     }
 
-    public void cadastrarMusicas() {
+    public void cadastrarTop15Musicas() {
         //para não esquecer https://api.deezer.com/search?q=mockbird
         listarArtistas();
         System.out.println("Digite o nome do artista que deseja baixar as músicas: ");
@@ -68,22 +68,23 @@ public class AppServicesMain {
 
         Optional<Artista> artistasEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
 
-        if (artistasEncontrado.isPresent()) {
-            //Não esquecer o seguinte ponto: a música tem que ter um set para artista, e artista para música
-            Integer id_denzer = artistasEncontrado.get().getId_denzer();
-            var json = api.obterDados(URLApi + id_denzer + URLApiFim);
+        Optional<Artista> artistaEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
+
+        if (artistaEncontrado.isPresent()) {
+            Integer idDeezer = artistaEncontrado.get().getId_denzer();
+            var json = api.obterDados(URLApi + idDeezer + URLApiFim);
             List<DadosMusica> musicasAPI = conveter.obterlista(json, DadosMusica.class);
+
             musicasAPI.forEach(m -> {
                 m.musicas().forEach(n -> {
-                    Artista artista = artistasEncontrado.get();
-                    Musica musica = new Musica(n.nome(), n.id_denzer(), artista);
-                    musicas.add(musica);
+                    Artista artista = artistaEncontrado.get();
+                    Musica musica = new Musica(n.nome(), n.id_denzer());
+                    musica.setArtista(artista);
+                    artista.getMusicas().add(musica);
                 });
             });
 
-            repositorio.saveAll((Iterable<? extends Artista>) musicas);
-
-
+            repositorio.save(artistaEncontrado.get());
         } else {
             System.out.println("Artista não encotrado");
         }
@@ -102,7 +103,7 @@ public class AppServicesMain {
 //        } else {
 //            System.out.println("Artista não encontrado");
 //        }
-    //   }
+//   }
 
 //    public void addMusicasNaLista(Musica musica) {
 //        //musicas.add(musica);
@@ -132,7 +133,7 @@ public class AppServicesMain {
 //        }
 
 
-    //  }
+//  }
 
 //    public void pesquisarDadosSobreArtista() {
 //        var artistaBuscaInformacoes = listarArtistas();
