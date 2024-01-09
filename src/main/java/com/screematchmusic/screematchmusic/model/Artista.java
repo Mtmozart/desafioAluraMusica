@@ -93,8 +93,6 @@ public class Artista {
         return "Artista{" +
                 "name='" + name + '\'' +
                 ", tipo=" + tipo +
-                ", musicas=" + musicas +
-                "id_denzer=" + id_denzer +
                 ", informacoes='" + informacoes + '\'' +
                 '}';
     }

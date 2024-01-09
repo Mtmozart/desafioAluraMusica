@@ -2,6 +2,7 @@ package com.screematchmusic.screematchmusic;
 
 import com.screematchmusic.screematchmusic.principal.Principal;
 import com.screematchmusic.screematchmusic.repository.ArtistaRepository;
+import com.screematchmusic.screematchmusic.repository.MusicaRepository;
 import com.screematchmusic.screematchmusic.service.AppServicesMain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ScreematchmusicApplication implements CommandLineRunner{
 	@Autowired
 	private ArtistaRepository repository;
+	@Autowired
+	private MusicaRepository musicaRepository;
 
 	public static void main(String[] args) {
 
@@ -20,7 +23,7 @@ public class ScreematchmusicApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		AppServicesMain app = new AppServicesMain(repository);
+		AppServicesMain app = new AppServicesMain(repository,musicaRepository);
 		Principal principal = new Principal(app);
 		principal.exibirMenu();
 	}

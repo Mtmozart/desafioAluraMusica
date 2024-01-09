@@ -10,7 +10,6 @@ public class Principal {
     private AppServicesMain appServicesMain = new AppServicesMain();
 
 
-
     Scanner sc = new Scanner(System.in);
 
     public Principal(AppServicesMain app) {
@@ -44,14 +43,14 @@ public class Principal {
                     appServicesMain.listarArtistas();
                     break;
                 case 4:
-              //      appServicesMain.listarMusica();
+                    appServicesMain.listarMusica();
                     break;
 
                 case 5:
-               //     appServicesMain.buscarMusicaPorArtista();
+                    //     appServicesMain.buscarMusicaPorArtista();
                     break;
                 case 6:
-                   // appServicesMain.pesquisarDadosSobreArtista();
+                    // appServicesMain.pesquisarDadosSobreArtista();
                     break;
                 case 7:
 //appServicesMain.pesquisarDadosSobreArtista();

@@ -3,6 +3,7 @@ package com.screematchmusic.screematchmusic.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.screematchmusic.screematchmusic.model.*;
 import com.screematchmusic.screematchmusic.repository.ArtistaRepository;
+import com.screematchmusic.screematchmusic.repository.MusicaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,12 +20,15 @@ public class AppServicesMain {
     private String URLApi = "https://api.deezer.com/artist/";
     private String URLApiFim = "/top?limit=15";
     private ArtistaRepository repositorio;
+    private MusicaRepository musicaRepository;
 
     public AppServicesMain() {
     }
 
-    public AppServicesMain(ArtistaRepository repository) {
+    public AppServicesMain(ArtistaRepository repository, MusicaRepository musicaRepository) {
+
         this.repositorio = repository;
+        this.musicaRepository = musicaRepository;
     }
 
     Scanner sc = new Scanner(System.in);
@@ -66,7 +70,6 @@ public class AppServicesMain {
         System.out.println("Digite o nome do artista que deseja baixar as músicas: ");
         String nome = sc.nextLine();
 
-        Optional<Artista> artistasEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
 
         Optional<Artista> artistaEncontrado = repositorio.findByNameContainingIgnoreCase(nome);
 
@@ -109,13 +112,12 @@ public class AppServicesMain {
 //        //musicas.add(musica);
 //    }
 
-//    public void listarMusica() {
-//        List<Musica> musicasListadas = musicas.stream()
-//                .sorted(Comparator.comparing(Musica::getTitulo))
-//                .collect(Collectors.toList());
-//
-//        musicasListadas.forEach(System.out::println);
-//    }
+    public void listarMusica() {
+        musicas = musicaRepository.findAll();
+        musicas.stream()
+                .sorted(Comparator.comparing(Musica::getTitulo)).forEach(System.out::println);
+
+    }
 
 //    public void buscarMusicaPorArtista() {
 //        var artistaBuscado = listarArtistas();
